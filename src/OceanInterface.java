@@ -1,92 +1,94 @@
-
+/**
+ * The OceanInterface defines the contract that the Ocean class must follow.
+ * It describes methods for managing the state of the game, interacting with ships,
+ * and tracking gameplay progress.
+ *
+ * This interface is particularly useful for testing, abstraction, and ensuring
+ * consistency across different implementations of the Ocean class.
+ *
+ * @author YourName
+ */
 public interface OceanInterface {
 
 	/**
-	 * Place all ten ships randomly on the (initially empty) ocean. Larger ships
-	 * must be placed before smaller ones to avoid cases where it may be impossible
-	 * to place the larger ships.
-	 * 
-	 * @see java.util.Random
+	 * Randomly places all ten ships on the ocean.
+	 * Ships must be placed such that larger ships are positioned before smaller ones
+	 * to avoid placement conflicts.
 	 */
-	public void placeAllShipsRandomly();
+	void placeAllShipsRandomly();
 
 	/**
-	 * Checks if this coordinate is not empty; that is, if this coordinate does not
-	 * contain an EmptySea reference.
-	 * 
-	 * @param row    the row (0 to 9) in which to check for a floating ship
-	 * @param column the column (0 to 9) in which to check for a floating ship
-	 * @return {@literal true} if the given location contains a ship, and
-	 *         {@literal false} otherwise.
+	 * Checks if the specified location contains a ship (not an EmptySea).
+	 *
+	 * @param row    The row coordinate (0 to 9).
+	 * @param column The column coordinate (0 to 9).
+	 * @return {@code true} if the location contains a ship, {@code false} otherwise.
 	 */
-	public boolean isOccupied(int row, int column);
+	boolean isOccupied(int row, int column);
 
 	/**
-	 * Fires a shot at this coordinate. This will update the number of shots that
-	 * have been fired (and potentially the number of hits, as well). If a location
-	 * contains a real, not sunk ship, this method should return {@literal true}
-	 * every time the user shoots at that location. If the ship has been sunk,
-	 * additional shots at this location should return {@literal false}.
-	 * 
-	 * @param row    the row (0 to 9) in which to shoot
-	 * @param column the column (0 to 9) in which to shoot
-	 * @return {@literal true} if the given location contains an afloat ship (not an
-	 *         EmptySea), {@literal false} if it does not.
+	 * Fires a shot at the specified location.
+	 * Updates the number of shots fired and hit count.
+	 *
+	 * If the location contains a ship that is not sunk, returns {@code true}.
+	 * If the ship is already sunk or the location is EmptySea, returns {@code false}.
+	 *
+	 * @param row    The row coordinate to shoot at (0 to 9).
+	 * @param column The column coordinate to shoot at (0 to 9).
+	 * @return {@code true} if the shot hits a ship, {@code false} otherwise.
 	 */
-	public boolean shootAt(int row, int column);
+	boolean shootAt(int row, int column);
 
 	/**
-	 * @return the number of shots fired in this game.
+	 * Gets the total number of shots fired by the user.
+	 *
+	 * @return The total number of shots fired.
 	 */
-	public int getShotsFired();
+	int getShotsFired();
 
 	/**
-	 * @return the number of hits recorded in this game.
+	 * Gets the total number of hits recorded.
+	 * Note that this includes multiple hits on the same location.
+	 *
+	 * @return The total number of hits recorded.
 	 */
-	public int getHitCount();
+	int getHitCount();
 
 	/**
-	 * @return the number of ships sunk in this game.
+	 * Gets the total number of ships sunk during the game.
+	 *
+	 * @return The number of ships sunk.
 	 */
-	public int getShipsSunk();
+	int getShipsSunk();
 
 	/**
-	 * @return {@literal true} if all ships have been sunk, otherwise
-	 *         {@literal false}.
+	 * Checks if the game is over, i.e., all ships have been sunk.
+	 *
+	 * @return {@code true} if all ships have been sunk, {@code false} otherwise.
 	 */
-	public boolean isGameOver();
+	boolean isGameOver();
 
 	/**
-	 * Provides access to the grid of ships in this Ocean. The methods in the Ship
-	 * class that take an Ocean parameter must be able to read and even modify the
-	 * contents of this array. While it is generally undesirable to allow methods in
-	 * one class to directly access instancce variables in another class, in this
-	 * case there is no clear and elegant alternatives.
-	 * 
-	 * @return the 10x10 array of ships.
+	 * Provides access to the 10x10 grid of ships.
+	 * This allows methods in the Ship class to read and modify the game state.
+	 *
+	 * @return A 10x10 2D array of ships.
 	 */
-	public Ship[][] getShipArray();
+	Ship[][] getShipArray();
 
 	/**
-	 * Prints the ocean. To aid the user, row numbers should be displayed along the
-	 * left edge of the array, and column numbers should be displayed along the top.
-	 * Numbers should be 0 to 9, not 1 to 10. The top left corner square should be
-	 * 0, 0.
-	 * <ul>
-	 * <li>Use 'S' to indicate a location that you have fired upon and hit a (real)
-	 * ship</li>
-	 * <li>'-' to indicate a location that you have fired upon and found nothing
-	 * there</li>
-	 * <li>'x' to indicate a location containing a sunken ship</li>
-	 * <li>'.' (a period) to indicate a location that you have never fired
-	 * upon.</li>
-	 * </ul>
-	 * 
-	 * This is the only method in Ocean that has any printing capability, and it
-	 * should never be called from within the Ocean class except for the purposes of
-	 * debugging.
-	 * 
+	 * Prints the current state of the ocean.
+	 *
+	 * Display rules:
+	 * - 'S': A ship part that has been hit.
+	 * - '-': A missed shot (EmptySea that was fired upon).
+	 * - 'x': A sunken ship.
+	 * - '.': An unfired location.
+	 *
+	 * Row numbers (0 to 9) should appear on the left.
+	 * Column numbers (0 to 9) should appear at the top.
+	 *
+	 * This is for user guidance during gameplay and debugging.
 	 */
-	public void print();
-
+	void print();
 }
