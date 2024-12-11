@@ -6,7 +6,7 @@
  * This interface is particularly useful for testing, abstraction, and ensuring
  * consistency across different implementations of the Ocean class.
  *
- * @author YourName
+ * @author Dave
  */
 public interface OceanInterface {
 
